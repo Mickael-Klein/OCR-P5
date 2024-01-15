@@ -59,7 +59,7 @@ describe('AuthService', () => {
     expect(req.request.method).toEqual('POST');
     expect(req.request.body).toEqual(registerRequestData);
 
-    req.flush(null); // Simulate a successful response
+    req.flush(null);
   });
 
   it('should send a login request', () => {
