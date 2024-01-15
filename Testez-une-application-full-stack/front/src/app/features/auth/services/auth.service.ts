@@ -21,7 +21,6 @@ export class AuthService {
   }
 
   public login(loginRequest: LoginRequest): Observable<SessionInformation> {
-    console.log('login shouldn t be called here');
     return this.httpClient.post<SessionInformation>(
       `${this.pathService}/login`,
       loginRequest

@@ -22,6 +22,16 @@ describe('LoginComponent', () => {
   let mockAuthService: any;
   let mockRouter: any;
 
+  const mockSessionData = {
+    token: 'randomTokenString',
+    type: 'type',
+    id: 101010,
+    username: 'username',
+    firstName: 'firstName',
+    lastName: 'lastName',
+    admin: false,
+  };
+
   beforeEach(async () => {
     mockSessionService = { logIn: jest.fn() };
     mockAuthService = { login: jest.fn() };
@@ -30,8 +40,8 @@ describe('LoginComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [LoginComponent],
       providers: [
-        { provides: SessionService, useValue: mockSessionService },
-        { provides: AuthService, useValue: mockAuthService },
+        { provide: SessionService, useValue: mockSessionService },
+        { provide: AuthService, useValue: mockAuthService },
         { provide: Router, useValue: mockRouter },
         FormBuilder,
       ],
@@ -77,14 +87,20 @@ describe('LoginComponent', () => {
   });
 
   test('should set onError to true on login error', () => {
-    console.log('hello');
-    // mockAuthService.login.mockReturnValue(throwError(() => new Error('error')));
+    mockAuthService.login.mockReturnValue(throwError(() => new Error('error')));
     component.submit();
     expect(mockAuthService.login).toHaveBeenLastCalledWith({
       email: '',
       password: '',
     });
-    // expect(mockAuthService.login).toHaveBeenCalled();
     expect(component.onError).toBe(true);
+  });
+
+  test('should call sessionService and redirect user on login success', () => {
+    mockAuthService.login.mockReturnValue(of(mockSessionData));
+    component.submit();
+    expect(component.onError).toBe(false);
+    expect(mockSessionService.logIn).toHaveBeenCalledWith(mockSessionData);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/sessions']);
   });
 });
