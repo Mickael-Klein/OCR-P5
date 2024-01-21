@@ -7,5 +7,4 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Mapper(componentModel = "spring")
-public interface TeacherMapper extends EntityMapper<TeacherDto, Teacher> {
-}
+public interface TeacherMapper extends EntityMapper<TeacherDto, Teacher> {}

@@ -6,17 +6,18 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  private final UserRepository userRepository;
 
-    public void delete(Long id) {
-        this.userRepository.deleteById(id);
-    }
+  public UserService(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-    public User findById(Long id) {
-        return this.userRepository.findById(id).orElse(null);
-    }
+  public void delete(Long id) {
+    this.userRepository.deleteById(id);
+  }
+
+  public User findById(Long id) {
+    return this.userRepository.findById(id).orElse(null);
+  }
 }

@@ -1,5 +1,8 @@
 package com.openclassrooms.starterjwt.security;
 
+import com.openclassrooms.starterjwt.security.jwt.AuthEntryPointJwt;
+import com.openclassrooms.starterjwt.security.jwt.AuthTokenFilter;
+import com.openclassrooms.starterjwt.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,17 +17,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.openclassrooms.starterjwt.security.jwt.AuthEntryPointJwt;
-import com.openclassrooms.starterjwt.security.jwt.AuthTokenFilter;
-import com.openclassrooms.starterjwt.security.services.UserDetailsServiceImpl;
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
-    // securedEnabled = true,
-    // jsr250Enabled = true,
-    prePostEnabled = true)
+  // securedEnabled = true,
+  // jsr250Enabled = true,
+  prePostEnabled = true
+)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
   @Autowired
   UserDetailsServiceImpl userDetailsService;
 
@@ -37,8 +38,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Override
-  public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-    authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+  public void configure(
+    AuthenticationManagerBuilder authenticationManagerBuilder
+  ) throws Exception {
+    authenticationManagerBuilder
+      .userDetailsService(userDetailsService)
+      .passwordEncoder(passwordEncoder());
   }
 
   @Bean
@@ -54,13 +59,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.cors().and().csrf().disable()
-      .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-      .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-      .antMatchers("/api/**").authenticated()
-      .anyRequest().authenticated();
+    http
+      .cors()
+      .and()
+      .csrf()
+      .disable()
+      .exceptionHandling()
+      .authenticationEntryPoint(unauthorizedHandler)
+      .and()
+      .sessionManagement()
+      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .and()
+      .authorizeRequests()
+      .antMatchers("/api/auth/**")
+      .permitAll()
+      .antMatchers("/api/**")
+      .authenticated()
+      .anyRequest()
+      .authenticated();
 
-    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(
+      authenticationJwtTokenFilter(),
+      UsernamePasswordAuthenticationFilter.class
+    );
   }
 }

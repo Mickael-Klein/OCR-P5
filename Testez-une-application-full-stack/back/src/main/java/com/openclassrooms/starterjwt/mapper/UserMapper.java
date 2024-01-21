@@ -7,5 +7,4 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Mapper(componentModel = "spring")
-public interface UserMapper extends EntityMapper<UserDto, User> {
-}
+public interface UserMapper extends EntityMapper<UserDto, User> {}
