@@ -4,17 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.openclassrooms.starterjwt.security.services.UserDetailsImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
-@TestPropertySource(properties = { "oc.app.jwtSecret=testSecretKey" })
 class JwtUtilsTest {
 
   @Mock
@@ -23,14 +22,17 @@ class JwtUtilsTest {
   @InjectMocks
   private JwtUtils jwtUtils;
 
+  @BeforeEach
+  public void setup() {
+    ReflectionTestUtils.setField(jwtUtils, "jwtExpirationMs", 3600000);
+    ReflectionTestUtils.setField(jwtUtils, "jwtSecret", "testSecretKey");
+  }
+
   @Test
   void testGenerateJwtToken() {
     // Arrange
     UserDetailsImpl userDetails = createUserDetails();
     when(authentication.getPrincipal()).thenReturn(userDetails);
-
-    ReflectionTestUtils.setField(jwtUtils, "jwtExpirationMs", 3600000);
-    ReflectionTestUtils.setField(jwtUtils, "jwtSecret", "testSecretKey");
 
     // Act
     String token = jwtUtils.generateJwtToken(authentication);
@@ -62,6 +64,42 @@ class JwtUtilsTest {
     assertThat(jwtUtils.validateJwtToken(invalidToken)).isFalse();
   }
 
+  @Test
+  void testInvalidSignature() {
+    // Arrange
+    String invalidToken = generateTestTokenWithInvalidSignature();
+
+    // Act & Assert
+    assertThat(jwtUtils.validateJwtToken(invalidToken)).isFalse();
+  }
+
+  @Test
+  void testMalformedToken() {
+    // Arrange
+    String malformedToken = "malformedToken";
+
+    // Act & Assert
+    assertThat(jwtUtils.validateJwtToken(malformedToken)).isFalse();
+  }
+
+  @Test
+  void testExpiredToken() {
+    // Arrange
+    String expiredToken = generateExpiredTestToken();
+
+    // Act & Assert
+    assertThat(jwtUtils.validateJwtToken(expiredToken)).isFalse();
+  }
+
+  @Test
+  void testEmptyClaimsString() {
+    // Arrange
+    String emptyClaimsToken = generateEmptyClaimsTestToken();
+
+    // Act & Assert
+    assertThat(jwtUtils.validateJwtToken(emptyClaimsToken)).isFalse();
+  }
+
   private String generateTestToken() {
     UserDetailsImpl userDetails = createUserDetails();
     when(authentication.getPrincipal()).thenReturn(userDetails);
@@ -70,6 +108,26 @@ class JwtUtilsTest {
     ReflectionTestUtils.setField(jwtUtils, "jwtSecret", "testSecretKey");
 
     return jwtUtils.generateJwtToken(authentication);
+  }
+
+  private String generateTestTokenWithInvalidSignature() {
+    String validToken = generateTestToken();
+
+    return validToken.substring(0, validToken.length() - 5) + "INVALID";
+  }
+
+  private String generateExpiredTestToken() {
+    UserDetailsImpl userDetails = createUserDetails();
+    when(authentication.getPrincipal()).thenReturn(userDetails);
+
+    ReflectionTestUtils.setField(jwtUtils, "jwtExpirationMs", -3600000);
+    ReflectionTestUtils.setField(jwtUtils, "jwtSecret", "testSecretKey");
+
+    return jwtUtils.generateJwtToken(authentication);
+  }
+
+  private String generateEmptyClaimsTestToken() {
+    return "eyJhbGciOiJIUzUxMiJ9.e30.";
   }
 
   private UserDetailsImpl createUserDetails() {
