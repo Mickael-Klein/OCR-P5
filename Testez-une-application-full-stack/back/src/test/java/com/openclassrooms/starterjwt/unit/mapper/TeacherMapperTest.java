@@ -1,8 +1,10 @@
-package com.openclassrooms.starterjwt.mapper;
+package com.openclassrooms.starterjwt.unit.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.openclassrooms.starterjwt.dto.TeacherDto;
+import com.openclassrooms.starterjwt.mapper.TeacherMapper;
+import com.openclassrooms.starterjwt.mapper.TeacherMapperImpl;
 import com.openclassrooms.starterjwt.models.Teacher;
 import java.time.LocalDateTime;
 import java.util.Arrays;

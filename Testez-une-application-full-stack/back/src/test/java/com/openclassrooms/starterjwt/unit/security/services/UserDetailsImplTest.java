@@ -1,7 +1,8 @@
-package com.openclassrooms.starterjwt.security.services;
+package com.openclassrooms.starterjwt.unit.security.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.openclassrooms.starterjwt.security.services.UserDetailsImpl;
 import org.junit.jupiter.api.Test;
 
 public class UserDetailsImplTest {

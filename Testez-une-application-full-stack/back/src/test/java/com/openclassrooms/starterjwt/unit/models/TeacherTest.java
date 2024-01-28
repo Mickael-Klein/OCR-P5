@@ -1,4 +1,4 @@
-package com.openclassrooms.starterjwt.models;
+package com.openclassrooms.starterjwt.unit.models;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.openclassrooms.starterjwt.models.Teacher;
 import java.time.LocalDateTime;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -94,12 +95,5 @@ public class TeacherTest {
 
     assertEquals(teacherUnderTest1.hashCode(), teacherUnderTest2.hashCode());
     assertNotEquals(teacherUnderTest1.hashCode(), teacherUnderTest3.hashCode());
-  }
-
-  @Test
-  public void testCanEqual() {
-    Teacher teacherUnderTest = Teacher.builder().id(testTeacherId).build();
-    assertTrue(teacherUnderTest.canEqual(teacherUnderTest));
-    assertFalse(teacherUnderTest.canEqual(new Object()));
   }
 }

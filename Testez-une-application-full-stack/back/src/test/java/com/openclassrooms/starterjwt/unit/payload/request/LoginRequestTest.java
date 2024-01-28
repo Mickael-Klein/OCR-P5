@@ -1,4 +1,4 @@
-package com.openclassrooms.starterjwt.payload.request;
+package com.openclassrooms.starterjwt.unit.payload.request;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

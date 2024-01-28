@@ -1,7 +1,8 @@
-package com.openclassrooms.starterjwt.payload.response;
+package com.openclassrooms.starterjwt.unit.payload.response;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.openclassrooms.starterjwt.payload.response.JwtResponse;
 import org.junit.jupiter.api.Test;
 
 class JwtResponseTest {

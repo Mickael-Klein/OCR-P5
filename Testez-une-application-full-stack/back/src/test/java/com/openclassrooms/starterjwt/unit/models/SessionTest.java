@@ -1,4 +1,4 @@
-package com.openclassrooms.starterjwt.models;
+package com.openclassrooms.starterjwt.unit.models;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.openclassrooms.starterjwt.models.Session;
+import com.openclassrooms.starterjwt.models.Teacher;
+import com.openclassrooms.starterjwt.models.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -140,12 +143,5 @@ public class SessionTest {
 
     assertEquals(sessionUnderTest1.hashCode(), sessionUnderTest2.hashCode());
     assertNotEquals(sessionUnderTest1.hashCode(), sessionUnderTest3.hashCode());
-  }
-
-  @Test
-  public void testCanEqual() {
-    Session sessionUnderTest = Session.builder().id(testSessionId).build();
-    assertTrue(sessionUnderTest.canEqual(sessionUnderTest));
-    assertFalse(sessionUnderTest.canEqual(new Object()));
   }
 }

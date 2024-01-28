@@ -132,18 +132,18 @@ The project adheres to a conventional layered architecture (Controller/Service/J
         └───com
             └───openclassrooms
                 └───starterjwt
-                    ├───controllers
                     ├───integration
-                    ├───mapper
-                    ├───models
-                    ├───payload
-                    │   ├───request
-                    │   └───response
-                    ├───security
-                    │   ├───jwt
-                    │   └───services
-                    ├───services
                     └───unit
+                        ├───controllers
+                        ├───mapper
+                        ├───models
+                        ├───payload
+                        │   ├───request
+                        │   └───response
+                        ├───security
+                        │   ├───jwt
+                        │   └───services
+                        └───services
 ```
 
 ## Security and Authentication
